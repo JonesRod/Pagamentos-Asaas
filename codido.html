@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testar Pagamentos Asaas</title>
+</head>
+<body>
+    <h1>Testar Pagamentos Asaas</h1>
+    <form id="asaasForm" onsubmit="return false;">
+        <label for="accessToken">Access Token:</label>
+        <input type="text" id="accessToken" value="$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjNlNDVkMmE0LTlmMTgtNGU2Zi04ZjY5LTBlMjU3ODhhYzBjZDo6JGFhY2hfMzE0MjY3MTktY2M4OC00MWI2LWE3NTAtZjIyYWY3ZTZjZjM3" size="80"><br><br>
+        <label for="valor">Valor:</label>
+        <input type="number" id="valor" placeholder="Informe o valor" step="0.01" min="0"><br><br>
+        <button type="button" id="testarBtn">Testar Pagamento</button>
+    </form>
+    <pre id="resultado" style="background:#eee; padding:10px; margin-top:20px;"></pre>
+    <script>
+        document.getElementById('testarBtn').onclick = function() {
+            const accessToken = document.getElementById('accessToken').value;
+            const valor = document.getElementById('valor').value;
+            const options = {
+                method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                    access_token: accessToken
+                }
+            };
+            fetch('https://api-sandbox.asaas.com/v3/myAccount/commercialInfo/', options)
+                .then(res => res.json())
+                .then(res => {
+                    document.getElementById('resultado').textContent = 
+                        'Valor informado: ' + valor + '\n\n' + JSON.stringify(res, null, 2);
+                })
+                .catch(err => {
+                    document.getElementById('resultado').textContent = 'Erro: ' + err;
+                });
+        };
+    </script>
+</body>
+</html>
